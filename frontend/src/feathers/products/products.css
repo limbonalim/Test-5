@@ -1,5 +1,5 @@
 .active {
-  color: grey;
+  color: grey !important;
 }
 
 .navList {
