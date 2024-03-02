@@ -21,8 +21,15 @@ export interface IProductFields {
 	description: string;
 	price: number;
 	image: string;
-	category: Category;
+	category: Schema.Types.ObjectId;
 	user: Schema.Types.ObjectId;
 }
 
 export type IProductModel = Model<IProductFields, unknown, unknown>;
+
+export interface ICategoryFields {
+	title: string;
+	value: string;
+}
+
+export type ICategoryModel = Model<ICategoryFields, unknown, unknown>;
