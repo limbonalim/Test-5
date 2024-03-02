@@ -2,9 +2,9 @@ import express, { json } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-
 import usersRouter from './router/users';
 import config from './config';
+import productsRouter from './router/products';
 
 const app = express();
 const port = 8000;
@@ -14,7 +14,7 @@ app.use(express.static('public'));
 app.use(cors());
 
 app.use('/users', usersRouter);
-
+app.use('/products', productsRouter);
 
 const run = async () => {
 	await mongoose.connect(config.mongoose);

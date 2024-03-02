@@ -5,7 +5,7 @@ const rootPath = __dirname;
 const config = {
 	rootPath,
 	publicPath: path.join(rootPath, 'public'),
-	mongoose: 'mongodb://localhost/spotify',
+	mongoose: 'mongodb://localhost/market',
 };
 
 export default config;
