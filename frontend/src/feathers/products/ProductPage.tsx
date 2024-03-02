@@ -58,7 +58,7 @@ const ProductPage = () => {
       <Box>
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 3}}>
           <Box>
-            <Typography color="gray">{product?.category}</Typography>
+            <Typography color="gray">{product?.category.title}</Typography>
             <Typography variant="h3">{product?.title}</Typography>
             <Box sx={{mb: 2}}>{<img style={{maxWidth: '450px'}} src={product ? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
             <Typography sx={{flexGrow: 1}}>{product?.description}</Typography>

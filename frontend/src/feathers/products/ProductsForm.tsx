@@ -14,9 +14,10 @@ import { useNavigate } from 'react-router-dom';
 import FileInput from '../../components/UI/FileInput/FileInput.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../users/usersSlice.ts';
-import { category } from '../../constants.ts';
 import { createProduct } from './productsThunks.ts';
 import { selectCreateError, selectIsCreateLoading } from './productsSlice.ts';
+import {selectCategories} from "../categories/categoriesSlice.ts";
+import {getCatgories} from "../categories/categoriesThunks.ts";
 
 export interface IFormProducts {
   title: string;
@@ -40,10 +41,17 @@ const ProductsForm = () => {
   const user = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsCreateLoading);
   const error = useAppSelector(selectCreateError);
+  const category = useAppSelector(selectCategories);
+
+  const getCategoryInfo = async () => {
+    await dispatch(getCatgories());
+  };
 
   useEffect(() => {
     if (!user) {
       navigate('/');
+    } else {
+      void getCategoryInfo();
     }
   }, [user, dispatch]);
 
@@ -88,7 +96,7 @@ const ProductsForm = () => {
   };
 
   const selectItems = category.map((item) => (
-    <MenuItem key={item.value} value={item.value}>{item.title}</MenuItem>
+    <MenuItem key={item._id} value={item._id}>{item.title}</MenuItem>
   ));
 
   return (

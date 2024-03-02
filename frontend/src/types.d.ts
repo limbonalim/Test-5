@@ -40,7 +40,10 @@ export interface IProduct {
   description: string;
   price: number;
   image: string;
-  category: string;
+  category: {
+    title: string;
+    value: string;
+  };
   user: {
     _id: string;
     displayName: string;
@@ -49,3 +52,9 @@ export interface IProduct {
 }
 
 type IProductItem = Pick<IProduct, '_id', 'title', 'price', 'image'>;
+
+export interface ICategory {
+  _id: string;
+  title: string;
+  value: string;
+}
