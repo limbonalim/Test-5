@@ -18,7 +18,7 @@ export type IUserModel = mongoose.Model<IUserFields, unknown, IUserMethods>;
 
 export interface IProductFields {
 	title: string;
-	description?: string;
+	description: string;
 	price: number;
 	image: string;
 	category: Category;
