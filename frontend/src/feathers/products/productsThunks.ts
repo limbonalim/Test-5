@@ -4,11 +4,13 @@ import { isAxiosError } from 'axios';
 import axiosApi from '../../axiosApi.ts';
 import { RootState } from '../../app/store.ts';
 import type { IFormProducts } from './ProductsForm.tsx';
+import {getCatgories} from "../categories/categoriesThunks.ts";
 
 export const getProducts = createAsyncThunk<IProductItem[], string | null, { rejectValue: IMyError }>(
   'products/getProducts',
-  async (category, {rejectWithValue}) => {
+  async (category, {rejectWithValue, dispatch}) => {
     try {
+      await dispatch(getCatgories()).unwrap();
       let response;
       if (category) {
         response = await axiosApi.get<IProductItem[]>(`/products?category=${category}`);
