@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 import { usersReducers } from '../feathers/users/usersSlice.ts';
+import { productsReducer } from '../feathers/products/productsSlice.ts';
 
 
 
@@ -12,6 +13,7 @@ const usersPersistConfig = {
 };
 
 const rootReducer = combineReducers({
+  products: productsReducer,
   users: persistReducer(usersPersistConfig, usersReducers)
 });
 

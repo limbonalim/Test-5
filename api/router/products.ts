@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import Product from '../models/productsSchema';
 import auth, { RequestWithUser } from '../middleware/auth';
 import { imagesUpload } from '../multer';
@@ -10,15 +10,34 @@ productsRouter.get('/', async (req, res, next) => {
 	try {
 		let products;
 		if (req.query.category) {
-			products = await Product.find({ category: req.query.category });
+			products = await Product.find(
+				{ category: req.query.category },
+				'title price image',
+			);
 		} else {
-			products = await Product.find();
+			products = await Product.find({}, 'title price image');
 		}
 
 		if (!products[0]) {
 			return res.status(404).send({ message: 'Not found' });
 		}
 		return res.send(products);
+	} catch (e) {
+		next(e);
+	}
+});
+
+productsRouter.get('/:id', async (req, res, next) => {
+	try {
+		let productId: Types.ObjectId;
+		try {
+			productId = new Types.ObjectId(req.params.id);
+		} catch {
+			return res.status(404).send({ error: 'Wrong ObjectId!' });
+		}
+
+		const product = await Product.findById(productId).populate('user', 'displayName phone');
+		return res.send(product);
 	} catch (e) {
 		next(e);
 	}

@@ -33,3 +33,19 @@ export interface IUser {
   phone: string;
   token: string;
 }
+
+export interface IProduct {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  user: {
+    _id: string;
+    displayName: string;
+    phone: string;
+  };
+}
+
+type IProductItem = Pick<IProduct,'_id', 'title', 'price', 'image'>;
