@@ -55,5 +55,8 @@ const productsSlice = createSlice({
 export const selectProducts = (state: RootState) => state.products.products;
 export const selectIsLoading = (state: RootState) => state.products.isLoading;
 export const selectError = (state: RootState) => state.products.error;
+export const selectCurrentProduct= (state: RootState) => state.products.currentProduct;
+export const selectIsCurrentLoading = (state: RootState) => state.products.isCurrentLoading;
+export const selectCurrentError = (state: RootState) => state.products.currentError;
 
 export const productsReducer = productsSlice.reducer;
