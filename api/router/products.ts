@@ -33,7 +33,7 @@ productsRouter.get('/:id', async (req, res, next) => {
 		try {
 			productId = new Types.ObjectId(req.params.id);
 		} catch {
-			return res.status(404).send({ error: 'Wrong ObjectId!' });
+			return res.status(404).send({ message: 'Wrong ObjectId!' });
 		}
 
 		const product = await Product.findById(productId).populate(

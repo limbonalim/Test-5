@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IMyError, IProduct, IProductItem } from '../../types';
+import { IMyError, IProduct, IProductItem, IValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 import axiosApi from '../../axiosApi.ts';
 import { RootState } from '../../app/store.ts';
@@ -59,7 +59,7 @@ export const deleteProduct = createAsyncThunk<void, string, { rejectValue: IMyEr
   }
 );
 
-export const createProduct = createAsyncThunk<void, IFormProducts, { rejectValue: IMyError, state: RootState }>(
+export const createProduct = createAsyncThunk<void, IFormProducts, { rejectValue: IMyError | IValidationError, state: RootState }>(
   'products/createProduct',
   async (data, {rejectWithValue, dispatch, getState}) => {
     try {
@@ -80,6 +80,9 @@ export const createProduct = createAsyncThunk<void, IFormProducts, { rejectValue
         return rejectWithValue(e.response.data);
       }
       if (isAxiosError(e) && e.response && e.response.status === 404) {
+        return rejectWithValue(e.response.data);
+      }
+      if (isAxiosError(e) && e.response && e.response.status === 422) {
         return rejectWithValue(e.response.data);
       }
       throw e;

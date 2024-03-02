@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store.ts';
-import { getProduct, getProducts } from './productsThunks.ts';
-import type { IMyError, IProduct, IProductItem } from '../../types';
+import { createProduct, deleteProduct, getProduct, getProducts } from './productsThunks.ts';
+import type { IMyError, IProduct, IProductItem, IValidationError } from '../../types';
 
 interface IProductsState {
   products: IProductItem[];
@@ -10,6 +10,10 @@ interface IProductsState {
   currentProduct: IProduct | null;
   isCurrentLoading: boolean;
   currentError: IMyError | null;
+  isCreateLoading: boolean;
+  createError: IMyError | IValidationError | null;
+  isDeleteLoading: boolean;
+  deleteError: IMyError | null;
 }
 
 const initialState: IProductsState = {
@@ -18,7 +22,11 @@ const initialState: IProductsState = {
   error: null,
   currentProduct: null,
   isCurrentLoading: false,
-  currentError: null
+  currentError: null,
+  isCreateLoading: false,
+  createError: null,
+  isDeleteLoading: false,
+  deleteError: null,
 };
 
 const productsSlice = createSlice({
@@ -49,6 +57,26 @@ const productsSlice = createSlice({
       state.isCurrentLoading = false;
       state.currentError = error || null;
     });
+
+    builder.addCase(createProduct.pending, (state) => {
+      state.isCreateLoading = true;
+      state.createError = null;
+    }).addCase(createProduct.fulfilled, (state) => {
+      state.isCreateLoading = false;
+    }).addCase(createProduct.rejected, (state, {payload: error}) => {
+      state.isCreateLoading = false;
+      state.createError = error || null;
+    });
+
+    builder.addCase(deleteProduct.pending, (state) => {
+      state.isDeleteLoading = true;
+      state.deleteError = null;
+    }).addCase(deleteProduct.fulfilled, (state) => {
+      state.isDeleteLoading = false;
+    }).addCase(deleteProduct.rejected, (state, {payload: error}) => {
+      state.isDeleteLoading = false;
+      state.deleteError = error || null;
+    });
   }
 });
 
@@ -58,5 +86,9 @@ export const selectError = (state: RootState) => state.products.error;
 export const selectCurrentProduct = (state: RootState) => state.products.currentProduct;
 export const selectIsCurrentLoading = (state: RootState) => state.products.isCurrentLoading;
 export const selectCurrentError = (state: RootState) => state.products.currentError;
+export const selectIsCreateLoading = (state: RootState) => state.products.isCreateLoading;
+export const selectCreateError = (state: RootState) => state.products.createError;
+export const selectIsDeleteLoading = (state: RootState) => state.products.isDeleteLoading;
+export const selectDeleteError = (state: RootState) => state.products.deleteError;
 
 export const productsReducer = productsSlice.reducer;

@@ -1,11 +1,22 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import {
+  Alert,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FileInput from '../../components/UI/FileInput/FileInput.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../users/usersSlice.ts';
 import { category } from '../../constants.ts';
 import { createProduct } from './productsThunks.ts';
+import { selectCreateError, selectIsCreateLoading } from './productsSlice.ts';
 
 export interface IFormProducts {
   title: string;
@@ -27,6 +38,8 @@ const ProductsForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectIsCreateLoading);
+  const error = useAppSelector(selectCreateError);
 
   useEffect(() => {
     if (!user) {
@@ -62,7 +75,7 @@ const ProductsForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    dispatch(createProduct(product)).unwrap();
+    await dispatch(createProduct(product)).unwrap();
     navigate('/');
   };
 
@@ -72,7 +85,7 @@ const ProductsForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      {/*{error && <Alert severity="error">{error.message}</Alert>}*/}
+      {error && <Alert severity="error" sx={{mb: 2}}>{error.message}</Alert>}
       <Grid container item direction="column" spacing={2}>
         <Grid item>
           <TextField
@@ -138,7 +151,7 @@ const ProductsForm = () => {
           />
         </Grid>
         <Grid item>
-          <Button type="submit">Add</Button>
+          <Button type="submit" disabled={isLoading}>Add</Button>
         </Grid>
       </Grid>
     </form>

@@ -1,18 +1,28 @@
 import { useCallback, useEffect } from 'react';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { selectCurrentProduct } from './productsSlice.ts';
+import {
+  selectCurrentError,
+  selectCurrentProduct, selectDeleteError,
+  selectIsCurrentLoading,
+  selectIsDeleteLoading
+} from './productsSlice.ts';
 import { deleteProduct, getProduct } from './productsThunks.ts';
 import { selectUser } from '../users/usersSlice.ts';
 import { BASE_URL } from '../../constants.ts';
+import Loader from '../../components/UI/Loader/Loader.tsx';
 
 const ProductPage = () => {
   const product = useAppSelector(selectCurrentProduct);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectIsCurrentLoading);
+  const error = useAppSelector(selectCurrentError);
+  const isDeleteLoading = useAppSelector(selectIsDeleteLoading);
+  const deleteError = useAppSelector(selectDeleteError);
   const {id} = useParams();
   let deleteButton;
 
@@ -33,16 +43,18 @@ const ProductPage = () => {
     }
   }, [id, dispatch]);
 
-  if (user?._id === product?.user._id) {
+  if (user && user._id === product?.user._id) {
     deleteButton = (
-      <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon/>}>
+      <Button variant="outlined" disabled={isDeleteLoading} onClick={handleDelete} startIcon={<DeleteIcon/>}>
         Delete
       </Button>
     );
   }
 
-  return (
+  return isLoading? <Loader/> : (
     <Box>
+      {error && <Alert severity="error">{error.message}</Alert>}
+      {deleteError && <Alert severity="warning">{deleteError.message}</Alert>}
       <Box>
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 3}}>
           <Box>
