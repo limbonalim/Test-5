@@ -40,6 +40,9 @@ productsRouter.get('/:id', async (req, res, next) => {
 			'user',
 			'displayName phone',
 		);
+		if (!product) {
+			return res.status(404).send({ message: 'Not found' });
+		}
 		return res.send(product);
 	} catch (e) {
 		next(e);
