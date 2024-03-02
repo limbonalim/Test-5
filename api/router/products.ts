@@ -86,7 +86,7 @@ productsRouter.delete('/:id', auth, async (req: RequestWithUser, res, next) => {
 			return res.status(404).send({ error: 'Wrong ObjectId!' });
 		}
 
-		const product = await Product.findOneAndDelete({
+		const product = await Product.find({
 			_id: productId,
 			user: user,
 		});
@@ -94,6 +94,8 @@ productsRouter.delete('/:id', auth, async (req: RequestWithUser, res, next) => {
 		if (!product) {
 			return res.status(403).send({ message: 'some error' });
 		}
+
+		await Product.findByIdAndDelete(productId);
 
 		return res.send({ message: 'successful' });
 	} catch (e) {

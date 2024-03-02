@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { selectCurrentProduct } from './productsSlice.ts';
 import { deleteProduct, getProduct } from './productsThunks.ts';
@@ -10,6 +10,7 @@ import { BASE_URL } from '../../constants.ts';
 
 const ProductPage = () => {
   const product = useAppSelector(selectCurrentProduct);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const {id} = useParams();
@@ -25,9 +26,10 @@ const ProductPage = () => {
     void getPageInfo();
   }, [getPageInfo]);
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     if (product) {
-      dispatch(deleteProduct(product._id));
+      await dispatch(deleteProduct(product._id)).unwrap();
+      navigate('/');
     }
   }, [id, dispatch]);
 
