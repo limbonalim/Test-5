@@ -48,12 +48,12 @@ const ProductPage = () => {
           <Box>
             <Typography color="gray">{product?.category}</Typography>
             <Typography variant="h3">{product?.title}</Typography>
-            <Box sx={{mb: 2}}>{<img src={product ? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
+            <Box sx={{mb: 2}}>{<img style={{maxWidth: '450px'}} src={product ? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
             <Typography sx={{flexGrow: 1}}>{product?.description}</Typography>
           </Box>
-          <Box sx={{display: 'flex', gap: 1, mb: 2}}>
-            <Typography variant="h5">{product?.user.displayName}</Typography>
-            <Typography variant="h5">{product?.user.phone}</Typography>
+          <Box sx={{display: 'flex', flexDirection: 'column', gap: 1, mb: 2}}>
+            <Typography variant="h5">Имя: {product?.user.displayName}</Typography>
+            <Typography variant="h5">Телефон: {product?.user.phone}</Typography>
           </Box>
         </Box>
         {deleteButton}

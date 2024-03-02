@@ -8,6 +8,7 @@ import { category as navigationMenu } from '../../constants.ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { selectError, selectIsLoading, selectProducts } from './productsSlice.ts';
 import { getProducts } from './productsThunks.ts';
+import './products.css';
 
 
 const ProductsPage = () => {
@@ -47,7 +48,7 @@ const ProductsPage = () => {
   return (
     <Box sx={{display: 'flex', gap: 2, width: '100%'}}>
       <Box>
-        <ul>
+        <ul className='navList'>
           {navLinks}
         </ul>
       </Box>
