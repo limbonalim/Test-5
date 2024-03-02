@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import config from './config';
 import User from './models/usersSchema';
-import Product, { Category } from './models/productsSchema';
+import Product from './models/productsSchema';
+import Category from './models/categorySchema';
 
 const dropCollection = async (
 	db: mongoose.Connection,
@@ -18,7 +19,7 @@ const run = async () => {
 	await mongoose.connect(config.mongoose);
 	const db = mongoose.connection;
 
-	const models = [User, Product];
+	const models = [User, Product, Category];
 
 	for (const model of models) {
 		await dropCollection(db, model.collection.collectionName);
@@ -48,13 +49,32 @@ const run = async () => {
 		},
 	);
 
+	const [cars, computers, tables, other] = await Category.create(
+		{
+			title: 'Cars',
+			value: 'cars',
+		},
+		{
+			title: 'Computers',
+			value: 'computers',
+		},
+		{
+			title: 'Tables',
+			value: 'tables',
+		},
+		{
+			title: 'Other',
+			value: 'other',
+		},
+	);
+
 	await Product.create(
 		{
 			title: 'Honda Accord',
 			description: 'Honda Accord - 2004 год, машина живая и т д',
 			price: 3000,
 			user: userOne,
-			category: Category.cars,
+			category: cars,
 			image: '/fixtures/accord.jpeg',
 		},
 		{
@@ -62,7 +82,7 @@ const run = async () => {
 			description: 'Продам ноутбук',
 			price: 220,
 			user: userTwo,
-			category: Category.computers,
+			category: computers,
 			image: '/fixtures/computer.webp',
 		},
 		{
@@ -70,7 +90,7 @@ const run = async () => {
 			description: 'Продам офисный стол недорого',
 			price: 320,
 			user: userThree,
-			category: Category.tables,
+			category: tables,
 			image: '/fixtures/table.jpeg',
 		},
 		{
@@ -78,7 +98,7 @@ const run = async () => {
 			description: 'Продам IPhone 12 pro',
 			price: 400,
 			user: userOne,
-			category: Category.other,
+			category: other,
 			image: '/fixtures/Iphone.jpeg',
 		},
 	);

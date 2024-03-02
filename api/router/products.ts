@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
 import Product from '../models/productsSchema';
 import auth, { RequestWithUser } from '../middleware/auth';
 import { imagesUpload } from '../multer';
@@ -36,10 +36,10 @@ productsRouter.get('/:id', async (req, res, next) => {
 			return res.status(404).send({ message: 'Wrong ObjectId!' });
 		}
 
-		const product = await Product.findById(productId).populate(
-			'user',
-			'displayName phone',
-		);
+		const product = await Product.findById(productId).populate([
+			{ path: 'user', select: 'displayName phone' },
+			{ path: 'category', select: 'title value' },
+		]);
 		if (!product) {
 			return res.status(404).send({ message: 'Not found' });
 		}

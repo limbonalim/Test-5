@@ -1,13 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
 import User from './usersSchema';
 import type { IProductFields, IProductModel } from '../types';
-
-export enum Category {
-	computers = 'computers',
-	tables = 'tables',
-	cars = 'cars',
-	other = 'other',
-}
+import Category from './categorySchema';
 
 const productsSchema = new Schema<IProductFields, IProductModel, unknown>({
 	title: {
@@ -27,9 +21,16 @@ const productsSchema = new Schema<IProductFields, IProductModel, unknown>({
 		required: true,
 	},
 	category: {
-		type: String,
-		enum: Category,
-		default: Category.other,
+		type: Types.ObjectId,
+		required: true,
+		ref: 'categories',
+		validate: {
+			validator: async (categoryId: Types.ObjectId) => {
+				const category = await Category.findById(categoryId);
+				return Boolean(category);
+			},
+			message: 'Category is not found',
+		},
 	},
 	user: {
 		type: Types.ObjectId,
