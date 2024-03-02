@@ -30,7 +30,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
       </Button>
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={onClose} keepMounted>
         <MenuItem onClick={() => dispatch(logout())}>LogOut</MenuItem>
-        <MenuItem onClick={() => navigate('/create_post')}>Create Post</MenuItem>
+        <MenuItem onClick={() => navigate('/create_product')}>Add Product</MenuItem>
       </Menu>
     </>
   );

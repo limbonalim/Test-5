@@ -1,33 +1,35 @@
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {Typography, Box, Button} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {BASE_URL} from "../../constants.ts";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectCurrentProduct} from "./productsSlice.ts";
 import {deleteProduct, getProduct} from "./productsThunks.ts";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {selectUser} from "../users/usersSlice.ts";
 
 const ProductPage = () => {
   const product = useAppSelector(selectCurrentProduct);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  const navigate = useNavigate();
   const {id} = useParams();
   let deleteButton;
 
-  useEffect(() => {
+  const getPageInfo = useCallback(async () => {
     if (id) {
-      dispatch(getProduct(id)).unwrap();
-      navigate('/');
+      await dispatch(getProduct(id));
     }
-  }, [id, dispatch]);
+  }, [id, dispatch])
 
-  const handleDelete = () => {
+  useEffect(() => {
+    void getPageInfo();
+  }, [getPageInfo]);
+
+  const handleDelete = useCallback(() => {
     if (product) {
       dispatch(deleteProduct(product._id));
     }
-  };
+  }, [id, dispatch])
 
   if (user?._id === product?.user._id) {
     deleteButton = (
@@ -44,7 +46,7 @@ const ProductPage = () => {
           <Box>
             <Typography color='gray'>{product?.category}</Typography>
             <Typography variant="h3">{product?.title}</Typography>
-            <Box sx={{mb: 2}}>{<img src={BASE_URL + '/' + product?.image} alt={product?.title}/>}</Box>
+            <Box sx={{mb: 2}}>{<img src={product? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
             <Typography sx={{flexGrow: 1}}>{product?.description}</Typography>
           </Box>
           <Box sx={{display: 'flex', gap: 1, mb: 2}}>
