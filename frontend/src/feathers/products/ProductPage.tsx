@@ -1,29 +1,37 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {Typography, Box, Button} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {BASE_URL} from "../../constants.ts";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectCurrentProduct} from "./productsSlice.ts";
-import {getProduct} from "./productsThunks.ts";
-import {useParams} from "react-router-dom";
+import {deleteProduct, getProduct} from "./productsThunks.ts";
+import {useNavigate, useParams} from "react-router-dom";
 import {selectUser} from "../users/usersSlice.ts";
 
 const ProductPage = () => {
   const product = useAppSelector(selectCurrentProduct);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
   const {id} = useParams();
   let deleteButton;
 
   useEffect(() => {
     if (id) {
-      dispatch(getProduct(id))
+      dispatch(getProduct(id)).unwrap();
+      navigate('/');
     }
   }, [id, dispatch]);
 
+  const handleDelete = () => {
+    if (product) {
+      dispatch(deleteProduct(product._id));
+    }
+  };
+
   if (user?._id === product?.user._id) {
     deleteButton = (
-      <Button variant="outlined" startIcon={<DeleteIcon />}>
+      <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon />}>
         Delete
       </Button>
     )

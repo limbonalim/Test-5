@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IMyError, IProduct, IProductItem} from "../../types";
 import {isAxiosError} from "axios";
 import axiosApi from "../../axiosApi.ts";
+import {RootState} from "../../app/store.ts";
 
 export const getProducts = createAsyncThunk<IProductItem[], string | null, {rejectValue: IMyError}>(
   'products/getProducts',
@@ -37,3 +38,22 @@ export const getProduct = createAsyncThunk<IProduct, string, {rejectValue: IMyEr
     }
   }
 );
+
+export const deleteProduct = createAsyncThunk<void, string, {rejectValue: IMyError, state: RootState}>(
+  'products/deleteProduct',
+  async (id, {rejectWithValue, dispatch, getState}) => {
+    try {
+      const token = getState().users?.user?.token
+      await axiosApi.delete(`/products/${id}`, {headers: {'Authorization': `Barer ${token}`}});
+      await dispatch(getProducts(null));
+    } catch (e) {
+      if (isAxiosError(e) && e.response && e.response.status === 403) {
+        return rejectWithValue(e.response.data);
+      }
+      if (isAxiosError(e) && e.response && e.response.status === 404) {
+        return rejectWithValue(e.response.data);
+      }
+      throw e;
+    }
+  }
+)

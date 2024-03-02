@@ -36,7 +36,10 @@ productsRouter.get('/:id', async (req, res, next) => {
 			return res.status(404).send({ error: 'Wrong ObjectId!' });
 		}
 
-		const product = await Product.findById(productId).populate('user', 'displayName phone');
+		const product = await Product.findById(productId).populate(
+			'user',
+			'displayName phone',
+		);
 		return res.send(product);
 	} catch (e) {
 		next(e);
@@ -71,5 +74,35 @@ productsRouter.post(
 		}
 	},
 );
+
+productsRouter.delete('/:id', auth, async (req: RequestWithUser, res, next) => {
+	try {
+		const user = req.user;
+
+		let productId: Types.ObjectId;
+		try {
+			productId = new Types.ObjectId(req.params.id);
+		} catch {
+			return res.status(404).send({ error: 'Wrong ObjectId!' });
+		}
+
+		const product = await Product.findOneAndDelete({
+			_id: productId,
+			user: user,
+		});
+
+		if (!product) {
+			return res.status(403).send({ message: 'some error' });
+		}
+
+		return res.send({ message: 'successful' });
+	} catch (e) {
+		if (e instanceof mongoose.Error.ValidationError) {
+			return res.status(422).send(e);
+		}
+
+		next(e);
+	}
+});
 
 export default productsRouter;

@@ -24,7 +24,6 @@ const ProductsPage = () => {
       if (index >= 0) {
         setPageTitle(navigationMenu[index].title);
       }
-      console.log(navigationMenu[index].value);
       await dispatch(getProducts(navigationMenu[index].value));
     } else {
       setPageTitle('All items');
