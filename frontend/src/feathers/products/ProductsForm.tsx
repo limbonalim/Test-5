@@ -73,6 +73,14 @@ const ProductsForm = () => {
     ));
   };
 
+  const getFieldError = () => {
+    if (parseFloat(product.price) < 0) {
+      return 'Price mast be upper than 0'
+    } else {
+      return undefined;
+    }
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await dispatch(createProduct(product)).unwrap();
@@ -124,6 +132,8 @@ const ProductsForm = () => {
             type="number"
             name="price"
             label="Price"
+            error={Boolean(getFieldError())}
+            helperText={getFieldError()}
           />
         </Grid>
         <Grid item>

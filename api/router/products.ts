@@ -53,11 +53,15 @@ productsRouter.post(
 	async (req: RequestWithUser, res, next) => {
 		try {
 			const user = req.user;
+			const price = parseFloat(req.body.price);
+			if (price < 0) {
+				return res.status(400).send({ message: 'Price mast be upper than 0' });
+			}
 
 			const product = new Product({
 				title: req.body.title,
 				description: req.body.description,
-				price: parseFloat(req.body.price),
+				price: price,
 				image: req.file ? `images/${req.file.filename}` : '',
 				category: req.body.category,
 				user: user?._id,
