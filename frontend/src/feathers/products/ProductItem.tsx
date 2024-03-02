@@ -1,18 +1,17 @@
 import React from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography, Link} from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { IProductItem } from '../../types';
-import {BASE_URL} from "../../constants.ts";
-
+import { BASE_URL } from '../../constants.ts';
+import type { IProductItem } from '../../types';
 
 
 const ProductItem: React.FC<IProductItem> = ({_id, title, price, image}) => {
-  const path = `/product/${_id}`
+  const path = `/product/${_id}`;
   const photo = BASE_URL + '/' + image;
   return (
     <Grid item>
       <Link to={path} component={RouterLink} sx={{textDecoration: 'none', color: 'inherit'}}>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{maxWidth: 345}}>
           <CardActionArea>
             <CardMedia
               component="img"

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { login, logout, register } from './usersThunks.ts';
 import { RootState } from '../../app/store.ts';
 import type { IMyError, IUser, IValidationError } from '../../types';
-import { login, logout, register } from './usersThunks.ts';
 
 interface IUsersState {
   user: IUser | null;
@@ -55,13 +55,13 @@ export const usersSlice = createSlice({
     });
 
     builder.addCase(logout.pending, (state) => {
-     state.isLogoutLoading = true;
-     state.logoutError = null;
+      state.isLogoutLoading = true;
+      state.logoutError = null;
     }).addCase(logout.fulfilled, (state) => {
       state.isLogoutLoading = false;
     }).addCase(logout.rejected, (state, {error}) => {
       state.isLogoutLoading = false;
-      state.logoutError = error.message? error.message : null;
+      state.logoutError = error.message ? error.message : null;
     });
   }
 });

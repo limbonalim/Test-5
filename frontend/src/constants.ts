@@ -14,4 +14,4 @@ export const category = [
   {title: 'Tables', path: '/products/tables', value: Category.tables},
   {title: 'Cars', path: '/products/cars', value: Category.cars},
   {title: 'Other', path: '/products/other', value: Category.other},
-]
+];

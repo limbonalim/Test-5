@@ -1,12 +1,12 @@
-import {useCallback, useEffect} from 'react';
-import {Typography, Box, Button} from "@mui/material";
+import { useCallback, useEffect } from 'react';
+import { Typography, Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {BASE_URL} from "../../constants.ts";
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {selectCurrentProduct} from "./productsSlice.ts";
-import {deleteProduct, getProduct} from "./productsThunks.ts";
-import {useParams} from "react-router-dom";
-import {selectUser} from "../users/usersSlice.ts";
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { selectCurrentProduct } from './productsSlice.ts';
+import { deleteProduct, getProduct } from './productsThunks.ts';
+import { selectUser } from '../users/usersSlice.ts';
+import { BASE_URL } from '../../constants.ts';
 
 const ProductPage = () => {
   const product = useAppSelector(selectCurrentProduct);
@@ -19,7 +19,7 @@ const ProductPage = () => {
     if (id) {
       await dispatch(getProduct(id));
     }
-  }, [id, dispatch])
+  }, [id, dispatch]);
 
   useEffect(() => {
     void getPageInfo();
@@ -29,14 +29,14 @@ const ProductPage = () => {
     if (product) {
       dispatch(deleteProduct(product._id));
     }
-  }, [id, dispatch])
+  }, [id, dispatch]);
 
   if (user?._id === product?.user._id) {
     deleteButton = (
-      <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon />}>
+      <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon/>}>
         Delete
       </Button>
-    )
+    );
   }
 
   return (
@@ -44,14 +44,14 @@ const ProductPage = () => {
       <Box>
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 3}}>
           <Box>
-            <Typography color='gray'>{product?.category}</Typography>
+            <Typography color="gray">{product?.category}</Typography>
             <Typography variant="h3">{product?.title}</Typography>
-            <Box sx={{mb: 2}}>{<img src={product? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
+            <Box sx={{mb: 2}}>{<img src={product ? BASE_URL + '/' + product?.image : ''} alt={product?.title}/>}</Box>
             <Typography sx={{flexGrow: 1}}>{product?.description}</Typography>
           </Box>
           <Box sx={{display: 'flex', gap: 1, mb: 2}}>
-            <Typography variant='h5'>{product?.user.displayName}</Typography>
-            <Typography variant='h5'>{product?.user.phone}</Typography>
+            <Typography variant="h5">{product?.user.displayName}</Typography>
+            <Typography variant="h5">{product?.user.phone}</Typography>
           </Box>
         </Box>
         {deleteButton}

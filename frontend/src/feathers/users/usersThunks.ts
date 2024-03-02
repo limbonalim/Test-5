@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 import axiosApi from '../../axiosApi.ts';
-import { ILoginForm, IMyError, IRegisterForm, IUser, IValidationError } from '../../types';
 import { RootState } from '../../app/store.ts';
 import { clearUser } from './usersSlice.ts';
+import type { ILoginForm, IMyError, IRegisterForm, IUser, IValidationError } from '../../types';
 
 export const register = createAsyncThunk<IUser, IRegisterForm, { rejectValue: IValidationError }>(
   'users/register',

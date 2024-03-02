@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box';
-import {Grid, Typography, Link, Alert} from '@mui/material';
-import {NavLink as RouterLink, useParams} from 'react-router-dom'
-import Loader from "../../components/UI/Loader/Loader.tsx";
-import ProductItem from "./ProductItem.tsx";
-import {category as navigationMenu} from "../../constants.ts";
-import {useCallback, useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {selectError, selectIsLoading, selectProducts} from "./productsSlice.ts";
-import {getProducts} from "./productsThunks.ts";
+import { Grid, Typography, Link, Alert } from '@mui/material';
+import { NavLink as RouterLink, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import Loader from '../../components/UI/Loader/Loader.tsx';
+import ProductItem from './ProductItem.tsx';
+import { category as navigationMenu } from '../../constants.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { selectError, selectIsLoading, selectProducts } from './productsSlice.ts';
+import { getProducts } from './productsThunks.ts';
 
 
 const ProductsPage = () => {
@@ -29,14 +29,15 @@ const ProductsPage = () => {
       setPageTitle('All items');
       await dispatch(getProducts(null));
     }
-  }, [category, dispatch])
+  }, [category, dispatch]);
 
   useEffect(() => {
     void getPageInfo();
   }, [getPageInfo]);
 
   const navLinks = navigationMenu.map((item) => (
-    <li key={item.path}><Link to={item.path} component={RouterLink} color="inherit" sx={{textDecoration: 'none', fontSize: 25}}>{item.title}</Link></li>
+    <li key={item.path}><Link to={item.path} component={RouterLink} color="inherit"
+                              sx={{textDecoration: 'none', fontSize: 25}}>{item.title}</Link></li>
   ));
 
   const render = products.map((item) => (
@@ -54,7 +55,7 @@ const ProductsPage = () => {
         <Typography variant="h2">{pageTitle}</Typography>
         {error && <Alert severity="warning" sx={{width: '100%'}}>{error.message}</Alert>}
         <Grid container spacing={1}>
-          {isLoading? <Loader/> : render}
+          {isLoading ? <Loader/> : render}
         </Grid>
       </Box>
     </Box>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks.ts';
 import { logout } from '../../feathers/users/usersThunks.ts';
 import type { IUser } from '../../types';

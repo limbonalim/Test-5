@@ -1,12 +1,11 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import { useAppDispatch } from "../../app/hooks";
-import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../../app/hooks.ts";
-import {selectUser} from "../users/usersSlice.ts";
-import {Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
-import FileInput from "../../components/UI/FileInput/FileInput.tsx";
-import {category} from "../../constants.ts";
-import {createProduct} from "./productsThunks.ts";
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import FileInput from '../../components/UI/FileInput/FileInput.tsx';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectUser } from '../users/usersSlice.ts';
+import { category } from '../../constants.ts';
+import { createProduct } from './productsThunks.ts';
 
 export interface IFormProducts {
   title: string;
@@ -51,10 +50,11 @@ const ProductsForm = () => {
   };
 
   const changeCategory = (e: SelectChangeEvent<string>) => {
-    const { value} = e.target;
+    const {value} = e.target;
 
     setProduct(prev => (
-      {...prev,
+      {
+        ...prev,
         category: value
       }
     ));
@@ -68,7 +68,7 @@ const ProductsForm = () => {
 
   const selectItems = category.map((item) => (
     <MenuItem key={item.value} value={item.value}>{item.title}</MenuItem>
-  ))
+  ));
 
   return (
     <form onSubmit={onSubmit}>
@@ -108,7 +108,7 @@ const ProductsForm = () => {
             }}
             onChange={onChange}
             value={product.price}
-            type='number'
+            type="number"
             name="price"
             label="Price"
           />
@@ -122,7 +122,7 @@ const ProductsForm = () => {
               required
               label="Category"
               name="category"
-              defaultValue=''
+              defaultValue=""
               onChange={changeCategory}
               value={product.category}
             >

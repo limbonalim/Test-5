@@ -1,7 +1,7 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {RootState} from "../../app/store.ts";
-import {getProduct, getProducts} from "./productsThunks.ts";
-import {IMyError, IProduct, IProductItem} from "../../types";
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store.ts';
+import { getProduct, getProducts } from './productsThunks.ts';
+import type { IMyError, IProduct, IProductItem } from '../../types';
 
 interface IProductsState {
   products: IProductItem[];
@@ -19,7 +19,7 @@ const initialState: IProductsState = {
   currentProduct: null,
   isCurrentLoading: false,
   currentError: null
-}
+};
 
 const productsSlice = createSlice({
   name: 'products',
@@ -55,7 +55,7 @@ const productsSlice = createSlice({
 export const selectProducts = (state: RootState) => state.products.products;
 export const selectIsLoading = (state: RootState) => state.products.isLoading;
 export const selectError = (state: RootState) => state.products.error;
-export const selectCurrentProduct= (state: RootState) => state.products.currentProduct;
+export const selectCurrentProduct = (state: RootState) => state.products.currentProduct;
 export const selectIsCurrentLoading = (state: RootState) => state.products.isCurrentLoading;
 export const selectCurrentError = (state: RootState) => state.products.currentError;
 

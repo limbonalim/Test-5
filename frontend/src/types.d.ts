@@ -48,4 +48,4 @@ export interface IProduct {
   };
 }
 
-type IProductItem = Pick<IProduct,'_id', 'title', 'price', 'image'>;
+type IProductItem = Pick<IProduct, '_id', 'title', 'price', 'image'>;

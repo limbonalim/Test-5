@@ -1,11 +1,11 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {IMyError, IProduct, IProductItem} from "../../types";
-import {isAxiosError} from "axios";
-import axiosApi from "../../axiosApi.ts";
-import {RootState} from "../../app/store.ts";
-import {IFormProducts} from "./ProductsForm.tsx";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IMyError, IProduct, IProductItem } from '../../types';
+import { isAxiosError } from 'axios';
+import axiosApi from '../../axiosApi.ts';
+import { RootState } from '../../app/store.ts';
+import type { IFormProducts } from './ProductsForm.tsx';
 
-export const getProducts = createAsyncThunk<IProductItem[], string | null, {rejectValue: IMyError}>(
+export const getProducts = createAsyncThunk<IProductItem[], string | null, { rejectValue: IMyError }>(
   'products/getProducts',
   async (category, {rejectWithValue}) => {
     try {
@@ -25,7 +25,7 @@ export const getProducts = createAsyncThunk<IProductItem[], string | null, {reje
   }
 );
 
-export const getProduct = createAsyncThunk<IProduct, string, {rejectValue: IMyError}>(
+export const getProduct = createAsyncThunk<IProduct, string, { rejectValue: IMyError }>(
   'products/getProduct',
   async (id, {rejectWithValue}) => {
     try {
@@ -40,11 +40,11 @@ export const getProduct = createAsyncThunk<IProduct, string, {rejectValue: IMyEr
   }
 );
 
-export const deleteProduct = createAsyncThunk<void, string, {rejectValue: IMyError, state: RootState}>(
+export const deleteProduct = createAsyncThunk<void, string, { rejectValue: IMyError, state: RootState }>(
   'products/deleteProduct',
   async (id, {rejectWithValue, dispatch, getState}) => {
     try {
-      const token = getState().users?.user?.token
+      const token = getState().users?.user?.token;
       await axiosApi.delete(`/products/${id}`, {headers: {'Authorization': `Barer ${token}`}});
       await dispatch(getProducts(null));
     } catch (e) {
@@ -59,7 +59,7 @@ export const deleteProduct = createAsyncThunk<void, string, {rejectValue: IMyErr
   }
 );
 
-export const createProduct = createAsyncThunk<void, IFormProducts, {rejectValue: IMyError, state: RootState}>(
+export const createProduct = createAsyncThunk<void, IFormProducts, { rejectValue: IMyError, state: RootState }>(
   'products/createProduct',
   async (data, {rejectWithValue, dispatch, getState}) => {
     try {
@@ -72,8 +72,8 @@ export const createProduct = createAsyncThunk<void, IFormProducts, {rejectValue:
       }
       postData.append('category', data.category);
 
-      const token = getState().users?.user?.token
-      await axiosApi.post(`/products`, postData,{headers: {'Authorization': `Barer ${token}`}});
+      const token = getState().users?.user?.token;
+      await axiosApi.post(`/products`, postData, {headers: {'Authorization': `Barer ${token}`}});
       await dispatch(getProducts(null));
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 403) {
