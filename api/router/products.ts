@@ -57,7 +57,7 @@ productsRouter.post(
 			const product = new Product({
 				title: req.body.title,
 				description: req.body.description,
-				price: req.body.price,
+				price: parseFloat(req.body.price),
 				image: req.file ? `images/${req.file.filename}` : '',
 				category: req.body.category,
 				user: user?._id,
